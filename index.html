@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+	<script src="jquery-ui-1.12.1/jquery.canvasjs.min.js"></script>
 	<script>
 
 		var d = new Date();
@@ -77,11 +77,16 @@
 									$("#horas").append("<div class='col-3'><p><strong>"+hora+"</strong> | "+cielo+"</p><p><img alt='"+cielo+"' title='"+cielo+"' height='80' src='https://v5i.tutiempo.net/wi/01/50/"+icono+".png' width='80'>"+temperatura+"°C</p><p><img alt='"+direccion_viento+"' title='"+direccion_viento+"' height='80' src='https://v5i.tutiempo.net/wd/big/black/"+direccion_icon+".png' width='80'>  "+viento+" km/h</p><p>Humedad: "+Humedad+"%<br>Presión: "+Presión+"</p></div>");
 								}
 							});
-						}
-						
+						};
+						let meses=["Enero", "Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 						for (var i = 1; i <8; i++) {
 							$(xml).find("day"+i).each(function(){
-								dia=$(this).find("date").text();
+								fecha=$(this).find("date").text();
+								cortado=fecha.split("-")
+								año=cortado[0]
+								dia=cortado[2]
+								mes=cortado[1]-1
+								dia= dia +" de "+meses[mes]+" de "+año
 								max=$(this).find("temperature_max").text();
 								min=$(this).find("temperature_min").text();
 								icono=$(this).find("icon").text();
@@ -96,9 +101,11 @@
 								$("#dia"+i).empty();
 								$("#dia"+i).append(dia);
 								$("#parrafo"+i).empty();
-								$("#parrafo"+i).append("<div class='row'><div class='col-1 '><img alt='Cubierto con lluvias' title='Cubierto con lluvias' height='80' src='https://v5i.tutiempo.net/wi/01/50/"+icono+".png' width='80'><br><br> 					</div><div class='col-2'>Máxima: "+max+"°C<br><br>Mínima: "+min+"°C</div><div class='col-1'><img alt='Suroeste' title='Suroeste' height='80' src='https://v5i.tutiempo.net/wd/big/black/"+icono_viento+".png' width='80'></div>  					<div class='col-2 text-center'><br>"+viento+" km/h</div> 					<div class='col-2'>Humedad: "+Humedad+"%<br>Salida sol: "+salida_sol+"<br>Puesta sol: "+puesta_sol+"</div><div class='col-1'><img alt='' height='80' src='https://v5i.tutiempo.net/wmi/02/"+icono_luna+".png' width='80'></div>					<div class='col-2'>Salida luna: "+salida_luna+"<br><br>Puesta luna: 03:50</div> 				</div>");
+								$("#parrafo"+i).append("<div class='row'><div class='col-sm-1 col-4 text-center'><img alt='Cubierto con lluvias' title='Cubierto con lluvias' height='80' src='https://v5i.tutiempo.net/wi/01/50/"+icono+".png' width='80'><br><br> 					</div><div class='col-md-2 col-8 text-center'>Máxima: "+max+"°C<br>Mínima: "+min+"°C <br>Humedad: "+Humedad+"%</div><div class='col-md-2 col-4 text-center'><img alt='Suroeste' title='Suroeste' height='80' src='https://v5i.tutiempo.net/wd/big/black/"+icono_viento+".png' width='80'></div>  					<div class='col-md-1 col-8 text-center'><br>"+viento+" km/h</div> 					<div class='col-md-2 col-4 text-center'><br>Salida sol: "+salida_sol+"<br>Puesta sol: "+puesta_sol+"</div><div class='col-md-1 col-4 text-center'><img alt='' height='80' src='https://v5i.tutiempo.net/wmi/02/"+icono_luna+".png' width='80'></div>					<div class='col-md-2 col-4 text-center'>Salida luna: "+salida_luna+"<br><br>Puesta luna: 03:50</div> 				</div>");
 							})
+							$(".ui-accordion-content").height("100%");
 						}
+						$("#chartContainer").empty();
 						temperatura_max=[];
 						temperatura_min=[];
 						años=[];
@@ -196,8 +203,10 @@
 									e.dataSeries.visible = true;
 								}
 								e.chart.render();
+								
 							}
-						
+
+						$('.canvasjs-chart-credit').empty();
 						
 					}
 
@@ -229,19 +238,8 @@
   		
  		<h3 id="dia1">1</h3>
   		<div>
-  			<p id="parrafo1 ">
-  				<div class="row">
-  					<div class="col-1 ">
-  						<img alt="Cubierto con lluvias" title="Cubierto con lluvias" height="80" src="https://v5i.tutiempo.net/wi/01/50/19.png" width="80"><br><br>
-  						
-  					</div>
-  					<div class="col-2 ">Máxima: 9°C<br><br>Mínima: 4°C</div>
-  					<div class="col-1 "><img alt="Suroeste" title="Suroeste" height="80" src="https://v5i.tutiempo.net/wd/big/black/SO.png" width="80"></div>
-  					<div class="col-2 text-center"><br>28 km/h</div>
-  					<div class="col-2 ">Humedad: 90%<br>Salida sol: 8:33<br>Puesta sol: 18:19</div>
-  					<div class="col-1 "><img alt="" height="80" src="https://v5i.tutiempo.net/wmi/02/10.png" width="80"></div>
-  					<div class="col-2 ">Salida luna: 13:57<br><br>Puesta luna: 03:50</div>
-  				</div>
+  			<p id="parrafo1" height="400px">
+  				
   			</p>
  		</div>
  		<h3 id="dia2">2</h3>
@@ -281,6 +279,7 @@
   </div>
   <div id="tabs-3" style="height: 430px; width: 100%;">
   	<p id="chartContainer" style="height: 370px; width: 100%;">
+  		f
   	</p>
   </div>
 </div>
