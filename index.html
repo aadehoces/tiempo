@@ -47,7 +47,7 @@
 		function mostrar(id) {
 			
 				var id = $("#localidad").val();
-				console.log(id);
+				//console.log(id);
 				url="https://api.tutiempo.net/xml/?lan=es&apid=45TX4Xz4X44sinp&lid="+id;
 				$.ajax({
 					type: "GET",
@@ -101,11 +101,29 @@
 						}
 						temperatura_max=[];
 						temperatura_min=[];
+						años=[];
+						meses=[];
+						dias=[];
 						for (var i = 1; i < 8; i++) {
 							$(xml).find("day"+i).each(function(){
 								//temperatura_max+i=$(this).find("temperature_max").text();
 								temperatura_max.push($(this).find("temperature_max").text())
 								temperatura_min.push($(this).find("temperature_min").text())
+								fecha=$(this).find("date").text();
+								cortado=fecha.split("-")
+								año=cortado[0]
+								dia=cortado[2]
+								mes=cortado[1]
+								
+								if (dia < 10) {
+									var dia="0"+dia
+								}
+								if (mes < 10) {
+									var mes="0"+mes-1
+								}
+								años.push(año)
+								meses.push(mes)
+								dias.push(dia)
 							})
 						}
 						var options = {
@@ -141,13 +159,13 @@
 									color: "#F08080",
 									yValueFormatString: "#,##0ºC",
 									dataPoints: [
-										{ x: new Date(2017, 10, 1), y: +temperatura_max[0] },
-										{ x: new Date(2017, 10, 2), y: +temperatura_max[1] },
-										{ x: new Date(2017, 10, 3), y: +temperatura_max[2] },
-										{ x: new Date(2017, 10, 4), y: +temperatura_max[3] },
-										{ x: new Date(2017, 10, 5), y: +temperatura_max[4] },
-										{ x: new Date(2017, 10, 6), y: +temperatura_max[5] },
-										{ x: new Date(2017, 10, 7), y: +temperatura_max[6] }
+										{ x: new Date(+años[0],+meses[0] , +dias[0]), y: +temperatura_max[0] },
+										{ x: new Date(+años[1],+meses[1] , +dias[1]), y: +temperatura_max[1] },
+										{ x: new Date(+años[2],+meses[2] , +dias[2]), y: +temperatura_max[2] },
+										{ x: new Date(+años[3],+meses[3] , +dias[3]), y: +temperatura_max[3] },
+										{ x: new Date(+años[4],+meses[4] , +dias[4]), y: +temperatura_max[4] },
+										{ x: new Date(+años[5],+meses[5] , +dias[5]), y: +temperatura_max[5] },
+										{ x: new Date(+años[6],+meses[6] , +dias[6]), y: +temperatura_max[6] }
 									]
 								},
 								{
@@ -158,13 +176,13 @@
 									color: "#21BCEE",
 									yValueFormatString: "#,##0ºC",
 									dataPoints: [
-										{ x: new Date(2017, 10, 1), y: +temperatura_min[0] },
-										{ x: new Date(2017, 10, 2), y: +temperatura_min[1] },
-										{ x: new Date(2017, 10, 3), y: +temperatura_min[2] },
-										{ x: new Date(2017, 10, 4), y: +temperatura_min[3] },
-										{ x: new Date(2017, 10, 5), y: +temperatura_min[4] },
-										{ x: new Date(2017, 10, 6), y: +temperatura_min[5] },
-										{ x: new Date(2017, 10, 7), y: +temperatura_min[6] }
+										{ x: new Date(+años[0],+meses[0] , +dias[0]), y: +temperatura_min[0] },
+										{ x: new Date(+años[1],+meses[1] , +dias[1]), y: +temperatura_min[1] },
+										{ x: new Date(+años[2],+meses[2] , +dias[2]), y: +temperatura_min[2] },
+										{ x: new Date(+años[3],+meses[3] , +dias[3]), y: +temperatura_min[3] },
+										{ x: new Date(+años[4],+meses[4] , +dias[4]), y: +temperatura_min[4] },
+										{ x: new Date(+años[5],+meses[5] , +dias[5]), y: +temperatura_min[5] },
+										{ x: new Date(+años[6],+meses[6] , +dias[6]), y: +temperatura_min[6] }
 										
 									]
 								}]
