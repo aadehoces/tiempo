@@ -101,7 +101,7 @@
 								$("#dia"+i).empty();
 								$("#dia"+i).append(dia);
 								$("#parrafo"+i).empty();
-								$("#parrafo"+i).append("<div class='row'><div class='col-sm-1 col-4 text-center'><img alt='Cubierto con lluvias' title='Cubierto con lluvias' height='80' src='https://v5i.tutiempo.net/wi/01/50/"+icono+".png' width='80'><br><br> 					</div><div class='col-md-2 col-8 text-center'>Máxima: "+max+"°C<br>Mínima: "+min+"°C <br>Humedad: "+Humedad+"%</div><div class='col-md-2 col-4 text-center'><img alt='Suroeste' title='Suroeste' height='80' src='https://v5i.tutiempo.net/wd/big/black/"+icono_viento+".png' width='80'></div>  					<div class='col-md-1 col-8 text-center'><br>"+viento+" km/h</div> 					<div class='col-md-2 col-4 text-center'><br>Salida sol: "+salida_sol+"<br>Puesta sol: "+puesta_sol+"</div><div class='col-md-1 col-4 text-center'><img alt='' height='80' src='https://v5i.tutiempo.net/wmi/02/"+icono_luna+".png' width='80'></div>					<div class='col-md-2 col-4 text-center'>Salida luna: "+salida_luna+"<br><br>Puesta luna: 03:50</div> 				</div>");
+								$("#parrafo"+i).append("<div class='row'><div class='col-sm-1 col-4 text-center'><img alt='Cubierto con lluvias' title='Cubierto con lluvias' height='80' src='https://v5i.tutiempo.net/wi/01/50/"+icono+".png' width='80'><br><br> 					</div><div class='col-md-2 col-8 text-center'>Máxima: "+max+"°C<br>Mínima: "+min+"°C <br>Humedad: "+Humedad+"%</div><div class='col-md-2 col-4 text-right'><img alt='Suroeste' title='Suroeste' height='80' src='https://v5i.tutiempo.net/wd/big/black/"+icono_viento+".png' width='80'></div>  					<div class='col-md-2 col-8 text-center'><br>"+viento+" km/h</div> 					<div class='col-md-2 col-4 text-center'>Salida sol: "+salida_sol+"<br><br>Puesta sol: "+puesta_sol+"</div><div class='col-md-1 col-4 text-center'><img alt='' height='80' src='https://v5i.tutiempo.net/wmi/02/"+icono_luna+".png' width='80'></div>					<div class='col-md-2 col-4 text-center'>Salida luna: "+salida_luna+"<br><br>Puesta luna: 03:50</div> 				</div>");
 							})
 							$(".ui-accordion-content").height("100%");
 						}
@@ -205,6 +205,7 @@
 								e.chart.render();
 								
 							}
+
 
 						$('.canvasjs-chart-credit').empty();
 						
