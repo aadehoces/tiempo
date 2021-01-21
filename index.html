@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>El tiempo</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+	<script>
+
+		var d = new Date();
+		mes=d.getMonth()+1;
+		var hoy = d.getFullYear() + '-' +mes + '-' +  d.getDate();
+		$( function() {
+			$( "#accordion" ).accordion();
+		} );
+		$( function() {
+			$( "#tabs" ).tabs();
+		} );
+		$(document).ready(mostrar)
+		$( document ).ready(function() {
+			urllocal="https://api.tutiempo.net/list?dl=1&tp=admin2&tv=ES|E18&td=xml";
+			$.ajax({
+				type: "GET",
+				url: "localidades.xml",
+				dataType: "xml",
+				success: function(xml) {
+					$(xml).find("loc").each(function(){
+  
+  
+						localidad = $(this).find("name").text();
+						id = $(this).find("id").text();
+  
+						$("#localidad").append("<option value='"+id+"'>"+localidad+"</option>");
+  
+					});
+				
+				}
+			},mostrar);
+			$("#localidad").change(mostrar);
+		});
+		function mostrar(id) {
+			
+				var id = $("#localidad").val();
+				console.log(id);
+				url="https://api.tutiempo.net/xml/?lan=es&apid=45TX4Xz4X44sinp&lid="+id;
+				$.ajax({
+					type: "GET",
+					url: url,
+					dataType: "xml",
+					success: function(xml) {
+						$(xml).find("locality").each(function(){
+							$("#loclidad_titulo").empty();
+							lugar= $(this).find("name").text();
+							$("#loclidad_titulo").append(lugar);
+						});
+						$("#horas").empty();
+						for (var i = 0 - 1; i < 25; i++) {
+							$(xml).find("hour"+i).each(function(){
+								var fecha= $(this).find("date").text();
+								if (fecha == hoy){
+									hora= $(this).find("hour_data").text();
+									cielo= $(this).find("text").text();
+									icono= $(this).find("icon").text();
+									temperatura= $(this).find("temperature").text();
+									direccion_viento= $(this).find("wind_direction").text();
+									direccion_icon= $(this).find("icon_wind").text();
+									viento= $(this).find("wind").text();
+									Humedad= $(this).find("humidity").text();
+									Presión= $(this).find("pressure").text();
+								
+									$("#horas").append("<div class='col-3'><p><strong>"+hora+"</strong> | "+cielo+"</p><p><img alt='"+cielo+"' title='"+cielo+"' height='80' src='https://v5i.tutiempo.net/wi/01/50/"+icono+".png' width='80'>"+temperatura+"°C</p><p><img alt='"+direccion_viento+"' title='"+direccion_viento+"' height='80' src='https://v5i.tutiempo.net/wd/big/black/"+direccion_icon+".png' width='80'>  "+viento+" km/h</p><p>Humedad: "+Humedad+"%<br>Presión: "+Presión+"</p></div>");
+								}
+							});
+						}
+						
+						for (var i = 1; i <8; i++) {
+							$(xml).find("day"+i).each(function(){
+								dia=$(this).find("date").text();
+								max=$(this).find("temperature_max").text();
+								min=$(this).find("temperature_min").text();
+								icono=$(this).find("icon").text();
+								icono_viento=$(this).find("icon_wind").text();
+								viento=$(this).find("wind").text();
+								Humedad=$(this).find("humidity").text();
+								salida_sol=$(this).find("sunrise").text();
+								puesta_sol=$(this).find("sunset").text();
+								icono_luna=$(this).find("moon_phases_icon").text();
+								salida_luna=$(this).find("moonrise").text();
+								puesta_luna=$(this).find("moonset").text();
+								$("#dia"+i).empty();
+								$("#dia"+i).append(dia);
+								$("#parrafo"+i).empty();
+								$("#parrafo"+i).append("<div class='row'><div class='col-1 '><img alt='Cubierto con lluvias' title='Cubierto con lluvias' height='80' src='https://v5i.tutiempo.net/wi/01/50/"+icono+".png' width='80'><br><br> 					</div><div class='col-2'>Máxima: "+max+"°C<br><br>Mínima: "+min+"°C</div><div class='col-1'><img alt='Suroeste' title='Suroeste' height='80' src='https://v5i.tutiempo.net/wd/big/black/"+icono_viento+".png' width='80'></div>  					<div class='col-2 text-center'><br>"+viento+" km/h</div> 					<div class='col-2'>Humedad: "+Humedad+"%<br>Salida sol: "+salida_sol+"<br>Puesta sol: "+puesta_sol+"</div><div class='col-1'><img alt='' height='80' src='https://v5i.tutiempo.net/wmi/02/"+icono_luna+".png' width='80'></div>					<div class='col-2'>Salida luna: "+salida_luna+"<br><br>Puesta luna: 03:50</div> 				</div>");
+							})
+						}
+						temperatura_max=[];
+						temperatura_min=[];
+						for (var i = 1; i < 8; i++) {
+							$(xml).find("day"+i).each(function(){
+								//temperatura_max+i=$(this).find("temperature_max").text();
+								temperatura_max.push($(this).find("temperature_max").text())
+								temperatura_min.push($(this).find("temperature_min").text())
+							})
+						}
+						var options = {
+								animationEnabled: true,
+								theme: "light2",
+								title:{
+									text: "Variación temperatura"
+								},
+								axisX:{
+									valueFormatString: "DD MMM"
+								},
+								axisY: {
+									title: "Grados",
+									suffix: "ºC",
+									minimum: -20
+								},
+								toolTip:{
+									shared:true
+								},  
+								legend:{
+									cursor:"pointer",
+									verticalAlign: "bottom",
+									horizontalAlign: "left",
+									dockInsidePlotArea: true,
+									itemclick: toogleDataSeries
+								},
+								data: [{
+									type: "line",
+									showInLegend: true,
+									name: "Temperaturas máximas",
+									markerType: "square",
+									xValueFormatString: "DD MMM, YYYY",
+									color: "#F08080",
+									yValueFormatString: "#,##0ºC",
+									dataPoints: [
+										{ x: new Date(2017, 10, 1), y: +temperatura_max[0] },
+										{ x: new Date(2017, 10, 2), y: +temperatura_max[1] },
+										{ x: new Date(2017, 10, 3), y: +temperatura_max[2] },
+										{ x: new Date(2017, 10, 4), y: +temperatura_max[3] },
+										{ x: new Date(2017, 10, 5), y: +temperatura_max[4] },
+										{ x: new Date(2017, 10, 6), y: +temperatura_max[5] },
+										{ x: new Date(2017, 10, 7), y: +temperatura_max[6] }
+									]
+								},
+								{
+									type: "line",
+									showInLegend: true,
+									name: "Temperaturas mínimas",
+									lineDashType: "square",
+									color: "#21BCEE",
+									yValueFormatString: "#,##0ºC",
+									dataPoints: [
+										{ x: new Date(2017, 10, 1), y: +temperatura_min[0] },
+										{ x: new Date(2017, 10, 2), y: +temperatura_min[1] },
+										{ x: new Date(2017, 10, 3), y: +temperatura_min[2] },
+										{ x: new Date(2017, 10, 4), y: +temperatura_min[3] },
+										{ x: new Date(2017, 10, 5), y: +temperatura_min[4] },
+										{ x: new Date(2017, 10, 6), y: +temperatura_min[5] },
+										{ x: new Date(2017, 10, 7), y: +temperatura_min[6] }
+										
+									]
+								}]
+							};
+							$("#chartContainer").CanvasJSChart(options);
+
+							function toogleDataSeries(e){
+								if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+									e.dataSeries.visible = false;
+								} else{
+									e.dataSeries.visible = true;
+								}
+								e.chart.render();
+							}
+						
+						
+					}
+
+			});
+			}
+	</script>
+</head>
+<body>
+	<div class="bg-primary text-center"> <h1 class="display-1 text-white">El tiempo en <span id="loclidad_titulo">Granada</span></h2></div>
+	<div class="container" id="contenedor">
+		<select class='form-select' aria-label='Default select example' id='localidad'>
+			<option selected value="5373">Selecciona una localidad</option>
+			<select>
+				<div id="tabs" class="mt-2">
+  <ul>
+	<li><a href="#tabs-1">Hoy</a></li>
+	<li><a href="#tabs-2">Próximos 7 dias</a></li>
+	<li><a href="#tabs-3">Variación temperaturas</a></li>
+  </ul>
+  <div id="tabs-1" >
+  	<div class="row" id="horas">
+  	
+  	</div>
+  	
+  </div>
+
+  <div id="tabs-2">
+  	<div id="accordion">
+  		
+ 		<h3 id="dia1">1</h3>
+  		<div>
+  			<p id="parrafo1 ">
+  				<div class="row">
+  					<div class="col-1 ">
+  						<img alt="Cubierto con lluvias" title="Cubierto con lluvias" height="80" src="https://v5i.tutiempo.net/wi/01/50/19.png" width="80"><br><br>
+  						
+  					</div>
+  					<div class="col-2 ">Máxima: 9°C<br><br>Mínima: 4°C</div>
+  					<div class="col-1 "><img alt="Suroeste" title="Suroeste" height="80" src="https://v5i.tutiempo.net/wd/big/black/SO.png" width="80"></div>
+  					<div class="col-2 text-center"><br>28 km/h</div>
+  					<div class="col-2 ">Humedad: 90%<br>Salida sol: 8:33<br>Puesta sol: 18:19</div>
+  					<div class="col-1 "><img alt="" height="80" src="https://v5i.tutiempo.net/wmi/02/10.png" width="80"></div>
+  					<div class="col-2 ">Salida luna: 13:57<br><br>Puesta luna: 03:50</div>
+  				</div>
+  			</p>
+ 		</div>
+ 		<h3 id="dia2">2</h3>
+  		<div>
+  			<p id="parrafo2">
+  				
+  			</p>
+ 		</div>
+ 		<h3 id="dia3">3</h3>
+  		<div>
+  			<p id="parrafo3">
+  				3
+  			</p>
+ 		</div><h3 id="dia4">4</h3>
+  		<div>
+  			<p id="parrafo4">
+  				4
+  			</p>
+ 		</div><h3 id="dia5">5</h3>
+  		<div>
+  			<p id="parrafo5">
+  				5
+  			</p>
+ 		</div><h3 id="dia6">6</h3>
+  		<div>
+  			<p id="parrafo6">
+  				6
+  			</p>
+ 		</div><h3 id="dia7">7</h3>
+  		<div>
+  			<p id="parrafo7">
+  				7
+  			</p>
+ 		</div>
+ 		
+	</div>
+  </div>
+  <div id="tabs-3" style="height: 430px; width: 100%;">
+  	<p id="chartContainer" style="height: 370px; width: 100%;">
+  	</p>
+  </div>
+</div>
+	</div>
+</body>
+</html>
