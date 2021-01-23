@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, user-scalable=no">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>El tiempo</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
@@ -10,9 +11,10 @@
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src="jquery-ui-1.12.1/jquery.canvasjs.min.js"></script>
+	<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 	<script>
-
+		
+		
 		var d = new Date();
 		mes=d.getMonth()+1;
 		var hoy = d.getFullYear() + '-' +mes + '-' +  d.getDate();
@@ -22,8 +24,8 @@
 		$( function() {
 			$( "#tabs" ).tabs();
 		} );
-		$(document).ready(mostrar)
-		$( document ).ready(function() {
+		
+		$(document).ready(function() {
 			urllocal="https://api.tutiempo.net/list?dl=1&tp=admin2&tv=ES|E18&td=xml";
 			$.ajax({
 				type: "GET",
@@ -43,7 +45,9 @@
 				}
 			},mostrar);
 			$("#localidad").change(mostrar);
+			$("#variacion").click(mostrar);
 		});
+		$(document).ready(mostrar)
 		function mostrar(id) {
 			
 				var id = $("#localidad").val();
@@ -74,7 +78,7 @@
 									Humedad= $(this).find("humidity").text();
 									Presión= $(this).find("pressure").text();
 								
-									$("#horas").append("<div class='col-3'><p><strong>"+hora+"</strong> | "+cielo+"</p><p><img alt='"+cielo+"' title='"+cielo+"' height='80' src='https://v5i.tutiempo.net/wi/01/50/"+icono+".png' width='80'>"+temperatura+"°C</p><p><img alt='"+direccion_viento+"' title='"+direccion_viento+"' height='80' src='https://v5i.tutiempo.net/wd/big/black/"+direccion_icon+".png' width='80'>  "+viento+" km/h</p><p>Humedad: "+Humedad+"%<br>Presión: "+Presión+"</p></div>");
+									$("#horas").append("<div class='col-4 col-md-3 border rounded border-white bg-light text-center'><p><strong>"+hora+"</strong> | "+cielo+"</p><p><img alt='"+cielo+"' title='"+cielo+"' height='80' src='https://v5i.tutiempo.net/wi/01/50/"+icono+".png' width='80'>"+temperatura+"°C</p><p><img alt='"+direccion_viento+"' title='"+direccion_viento+"' height='80' src='https://v5i.tutiempo.net/wd/big/black/"+direccion_icon+".png' width='80'>  "+viento+" km/h</p><p>Humedad: "+Humedad+"%<br>Presión: "+Presión+"</p></div>");
 								}
 							});
 						};
@@ -101,7 +105,7 @@
 								$("#dia"+i).empty();
 								$("#dia"+i).append(dia);
 								$("#parrafo"+i).empty();
-								$("#parrafo"+i).append("<div class='row'><div class='col-sm-1 col-4 text-center'><img alt='Cubierto con lluvias' title='Cubierto con lluvias' height='80' src='https://v5i.tutiempo.net/wi/01/50/"+icono+".png' width='80'><br><br> 					</div><div class='col-md-2 col-8 text-center'>Máxima: "+max+"°C<br>Mínima: "+min+"°C <br>Humedad: "+Humedad+"%</div><div class='col-md-2 col-4 text-right'><img alt='Suroeste' title='Suroeste' height='80' src='https://v5i.tutiempo.net/wd/big/black/"+icono_viento+".png' width='80'></div>  					<div class='col-md-2 col-8 text-center'><br>"+viento+" km/h</div> 					<div class='col-md-2 col-4 text-center'>Salida sol: "+salida_sol+"<br><br>Puesta sol: "+puesta_sol+"</div><div class='col-md-1 col-4 text-center'><img alt='' height='80' src='https://v5i.tutiempo.net/wmi/02/"+icono_luna+".png' width='80'></div>					<div class='col-md-2 col-4 text-center'>Salida luna: "+salida_luna+"<br><br>Puesta luna: 03:50</div> 				</div>");
+								$("#parrafo"+i).append("<div class='row border rounded border-white bg-light text-center p-4'><div class='col-lg-1 col-4 text-center p-2'><img alt='Cubierto con lluvias' title='Cubierto con lluvias' height='80' src='https://v5i.tutiempo.net/wi/01/50/"+icono+".png' width='80'><br><br> 					</div><div class='col-lg-2 col-8 text-center p-2'>Máxima: "+max+"°C<br>Mínima: "+min+"°C <br>Humedad: "+Humedad+"%</div><div class='col-lg-2 col-4 text-right p-2'><img alt='Suroeste' title='Suroeste' height='80' src='https://v5i.tutiempo.net/wd/big/black/"+icono_viento+".png' width='80'></div>  					<div class='col-lg-2 col-8 text-center p-2'><br>"+viento+" km/h</div> 					<div class='col-lg-2 col-4 text-center p-2'>Salida sol: "+salida_sol+"<br><br>Puesta sol: "+puesta_sol+"</div><div class='col-lg-1 col-4 text-center p-2'><img alt='' height='80' src='https://v5i.tutiempo.net/wmi/02/"+icono_luna+".png' width='80'></div>					<div class='col-lg-2 col-4 text-center p-2'>Salida luna: "+salida_luna+"<br><br>Puesta luna: 03:50</div> 				</div>");
 							})
 							$(".ui-accordion-content").height("100%");
 						}
@@ -111,11 +115,16 @@
 						años=[];
 						meses=[];
 						dias=[];
+						minima=parseInt(100)
 						for (var i = 1; i < 8; i++) {
 							$(xml).find("day"+i).each(function(){
 								//temperatura_max+i=$(this).find("temperature_max").text();
 								temperatura_max.push($(this).find("temperature_max").text())
-								temperatura_min.push($(this).find("temperature_min").text())
+								temperatura = parseInt($(this).find("temperature_min").text())
+								if (temperatura < minima) {
+									minima = temperatura
+								}
+								temperatura_min.push(temperatura)
 								fecha=$(this).find("date").text();
 								cortado=fecha.split("-")
 								año=cortado[0]
@@ -132,7 +141,11 @@
 								meses.push(mes)
 								dias.push(dia)
 							})
+
 						}
+						
+						marca = minima-10
+						
 						var options = {
 								animationEnabled: true,
 								theme: "light2",
@@ -145,7 +158,7 @@
 								axisY: {
 									title: "Grados",
 									suffix: "ºC",
-									minimum: -20
+									minimum: +marca
 								},
 								toolTip:{
 									shared:true
@@ -166,7 +179,7 @@
 									color: "#F08080",
 									yValueFormatString: "#,##0ºC",
 									dataPoints: [
-										{ x: new Date(+años[0],+meses[0] , +dias[0]), y: +temperatura_max[0] },
+										{ x: new Date(+años[0],+meses[0] , +dias[0]), y: +temperatura_max[0]},
 										{ x: new Date(+años[1],+meses[1] , +dias[1]), y: +temperatura_max[1] },
 										{ x: new Date(+años[2],+meses[2] , +dias[2]), y: +temperatura_max[2] },
 										{ x: new Date(+años[3],+meses[3] , +dias[3]), y: +temperatura_max[3] },
@@ -212,12 +225,14 @@
 					}
 
 			});
+			
 			}
+
 	</script>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 	<div class="bg-primary text-center"> <h1 class="display-1 text-white">El tiempo en <span id="loclidad_titulo">Granada</span></h2></div>
-	<div class="container" id="contenedor">
+	<div class="container mb-2 mt-3" id="contenedor">
 		<select class='form-select' aria-label='Default select example' id='localidad'>
 			<option selected value="5373">Selecciona una localidad</option>
 			<select>
@@ -225,7 +240,7 @@
   <ul>
 	<li><a href="#tabs-1">Hoy</a></li>
 	<li><a href="#tabs-2">Próximos 7 dias</a></li>
-	<li><a href="#tabs-3">Variación temperaturas</a></li>
+	<li id="variacion"><a  href="#tabs-3">Variación temperaturas</a></li>
   </ul>
   <div id="tabs-1" >
   	<div class="row" id="horas">
@@ -285,5 +300,13 @@
   </div>
 </div>
 	</div>
+	<footer class="bg-light text-center text-lg-start mt-auto">
+  
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+    © 2021 Copyright:
+    <a class="text-dark" href="https://mdbootstrap.com/">Adrián De Hoces</a>
+  </div>
+  <!-- Copyright -->
+</footer>
 </body>
 </html>
